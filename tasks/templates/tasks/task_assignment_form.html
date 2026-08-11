@@ -1,0 +1,17 @@
+
+<form id="task-assignment-form" action="{% url "tasks:assign-user" task.id %}" data-task-id="{{ task.id }}" method="post">
+    {% csrf_token %}
+    <div clas="form-group">
+        {{ form.task_id }}
+    </div>
+
+     <div clas="form-group">
+        {{ form.user_assigned_to }}
+    </div>
+
+        <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <input type="submit" name="task_update" value="Assign User" class="btn btn-primary"></input>
+        </div>
+
+</form>

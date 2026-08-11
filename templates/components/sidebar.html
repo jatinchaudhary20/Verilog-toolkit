@@ -1,0 +1,105 @@
+{% load static %}
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url "accounts:dashboard" %}" class="brand-link">
+      <img src="{% static "dist/img/AdminLTELogo.png" %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Swifthub</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{{ request.user.profile.profile_picture_url }}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="{% url "accounts:profile-detail" request.user.profile.pk %}" class="d-block">{{ request.user.profile.full_name }}</a>
+        </div>
+      </div>
+
+      <!-- SidebarSearch Form -->
+      <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+               <!-- Home -->
+               <li class="nav-item">
+                <a href="{% url "accounts:dashboard" %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard'  %}active{% endif %} ">
+                  <i class="nav-icon fas fa-chart-line"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+
+                <!-- Projects -->
+                <li class="nav-item">
+                  <a href="#" class="nav-link {% if request.resolver_match.url_name == 'create'  or request.resolver_match.url_name == 'list' %}active{% endif %} ">
+                    <i class="nav-icon fas fa-project-diagram"></i>
+                    <p>
+                      Projects
+                      <i class="fas fa-angle-left right"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="{% url "projects:list" %}" class="nav-link {% if request.resolver_match.url_name == 'list'  %}active{% endif %} ">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>All Projects</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="{% url "projects:create" %}" class="nav-link {% if request.resolver_match.url_name == 'create'  %}active{% endif %} ">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Add Project</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+
+              <!-- Tasks -->
+              <li class="nav-item">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'team-create'  or request.resolver_match.url_name == 'team-list' %}active{% endif %}">
+                  <i class="nav-icon fas fa-users"></i>
+                  <p>
+                    Teams
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url "teams:team-list" %}" class="nav-link {% if request.resolver_match.url_name == 'team-list' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>All Teams</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url "teams:team-create" %}" class="nav-link {% if request.resolver_match.url_name == 'team-create' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add Teams</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+            
+
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

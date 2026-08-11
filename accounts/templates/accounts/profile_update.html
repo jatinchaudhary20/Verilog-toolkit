@@ -1,0 +1,46 @@
+
+{% extends "base.html" %}
+{% block title %} {{title }} | {{block.super }}{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<form method="post" entype="multipart/form-data">
+    {% csrf_token %}
+<div class="row">
+    <div class="col-md-6">
+        {% comment %} {{ form.as_p }} {% endcomment %}
+       <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Update Profile</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            {{ form|crispy }}
+           
+          </div>
+         
+         
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+
+    
+    
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <a href="{% url "accounts:dashboard" %}" class="btn btn-secondary">Cancel</a>
+      <input type="submit" value="Save Changes" class="btn btn-success float-right">
+    </div>
+  </div>
+</form>
+
+{% endblock  %}

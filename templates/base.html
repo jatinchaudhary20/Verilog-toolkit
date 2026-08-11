@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %} Swifthub{% endblock %}</title>
+
+{% include "components/css.html" %}
+
+{% block page_css %}
+
+{% endblock  %}
+
+<script crossorigin="anonymous" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+{{ form.media }}
+
+</head>
+<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__wobble" src="{% static "dist/img/AdminLTELogo.png" %}" alt="AdminLTELogo" height="60" width="60">
+  </div>
+
+  <!-- Navbar -->
+  {% include "components/navbar.html" %}
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+ {% include "components/sidebar.html" %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper {% if is_kanban %}kanban{% endif %}">
+    <!-- Content Header (Page header) -->
+    {% include "components/header_content.html" %}
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      {% block content %}
+      
+      {% endblock %}
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+
+  <!-- Main Footer -->
+  {% include "components/footer.html" %}
+</div>
+<!-- ./wrapper -->
+
+{% include "components/javascript.html" %}
+
+{% block script %}
+
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block title %}{{title }} |{{block.super}}{% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+ <!-- Default box -->
+ <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ project.name }}</h3>
+
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+          <i class="fas fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+          <div class="row">
+            <div class="col-12 col-sm-4">
+              <div class="info-box bg-light">
+                <div class="info-box-content">
+                  <span class="info-box-text text-center text-muted">Estimated budget</span>
+                  <span class="info-box-number text-center text-muted mb-0">{% if project.total_amount %}{{ project.total_amount }} {% else %}0{% endif %}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <div class="info-box bg-light">
+                <div class="info-box-content">
+                  <span class="info-box-text text-center text-muted">Total amount spent</span>
+                  <span class="info-box-number text-center text-muted mb-0">{% if project.amount_spent %}{{ project.amount_spent }} {% else %}0{% endif %}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <div class="info-box bg-light">
+                <div class="info-box-content">
+                  <span class="info-box-text text-center text-muted">Estimated project duration</span>
+                  <span class="info-box-number text-center text-muted mb-0">{% if project.estimated_duration %}{{ project.estimated_duration }} Days {% else %}0{% endif %}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br> 
+          <!-- project kanban board -->
+          <a href="{% url "projects:kanban-board" project.id %}" class="btn btn-sm btn-primary">View Kanban Board</a> 
+           <!-- end of project kanban board -->               
+              
+            <br>
+            <br>
+
+            
+  <!-- comments -->      
+          <div class="row">
+            <div class="col-12">
+              <h4>Recent Comments({{ comments_count }})</h4>
+            <form action="{% url "projects:project-detail" project.pk %}" method="post">
+              {% csrf_token %}
+              <div class="col-10">
+              {{ comment_form|crispy }}
+            </div>
+
+            {% comment %} button {% endcomment %}
+            <div class="row">
+              <div class="col-10">
+                <input type="submit" name="comment_submit" value="post your comment" class="btn btn-success float-left">
+              </div>
+            </div>
+            </form>
+            <br>
+            {% comment %} displaying messages {% endcomment %}
+            {% if messages %}
+            <div class="messages col-10">
+              {% for message in messages %}
+              <div class="alert {% if message.tags %}alert-{{message.tags}}{% else %}alert-info{% endif %}">
+                {{ message }}
+              </div>
+              
+              {% endfor %}
+
+            </div>
+            
+            {% endif %}
+
+            {% for comment in page_obj %}
+                <div class="post">
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="{{ comment.user.profile.profile_picture_url }}" alt="user image">
+                    <span class="username">
+                      <a href="#">{{ comment.user.profile.full_name }}</a>
+                    </span>
+                    <span class="description">Shared publicly - {{ comment.created_at | timesince}}</span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                    {{ comment.comment }}
+                  </p>                  
+                </div>
+
+                {% endfor %}               
+            </div>
+          </div>
+        {% comment %} pagination {% endcomment %}
+        {% include "components/paginator.html" %}
+
+        </div>
+        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+          <h3 class="text-primary"><i class="fas fa-paint-brush"></i> {{ my_company }}</h3>
+          <p class="text-muted">{{ my_company_description }}</p>
+          <br>
+          <div class="text-muted">
+            {% if project.client_company %}
+            <p class="text-sm">Client Company
+              <b class="d-block">{{ project.client_company }}</b>
+            </p>
+            {% endif %}
+            <p class="text-sm">Project Leader
+              <b class="d-block">{{ project.team.team_lead.profile.full_name }}</b>
+            </p>
+          </div>
+
+          <h5 class="mt-5 text-muted">Project files</h5>
+          <ul class="list-unstyled">
+            {% for attachment in project.attachments.all %}
+            <li>
+              <a href="{{ attachment.file.url }}"  target="_blank"  class="btn-link text-secondary">
+                <i class="far fa-fw fa-file"></i> {{ attachment.file.name|truncatechars:40 }}x</a>
+            </li>
+            {% endfor %}
+           
+          </ul>
+          <div class="text-center mt-5 mb-3">
+            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-default">
+             Add files
+            </button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+
+  <div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Upload project files</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <form action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+        <div class="modal-body">
+          {{ attachment_form }}
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <input type="submit" name="attachment_submit" value="Upload file" class="btn btn-primary">
+        </div>
+      </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+{% endblock %}

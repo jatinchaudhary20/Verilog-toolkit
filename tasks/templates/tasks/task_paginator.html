@@ -1,0 +1,21 @@
+   {% comment %} pagination controls {% endcomment %}
+   <div class="pagination">  
+
+    <span class="step-links">
+
+        {% if tasks.has_previous %}
+        <a href="?task_page=1">&laquo; first</a>
+        <a href="?task_page={{ tasks.previous_page_number }}">previous</a>
+        {% endif %}
+
+     <span class"current">
+        Page {{ tasks.number }} of {{ tasks.paginator.num_pages }}
+     </span>
+
+     {% if tasks.has_next %}
+     <a href="?task_page={{ tasks.next_page_number }}">next</a>
+     <a href="?task_page={{ tasks.paginator.num_pages }}">last</a>
+     {% endif %}
+
+    </span>
+  </div>
